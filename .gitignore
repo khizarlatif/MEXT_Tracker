@@ -1,0 +1,7 @@
+﻿# Sensitive files and credentials
+*.private.*
+.env
+*.env
+config.json
+*CSC.txt
+*MEXT.txt
