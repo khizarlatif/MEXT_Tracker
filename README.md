@@ -2,137 +2,111 @@
 
 <div align="center">
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-mexttracker.netlify.app-00a2ff?style=for-the-badge&logo=netlify&logoColor=white)](https://mexttracker.netlify.app/)
+[![Live Web App](https://img.shields.io/badge/Live_App-mexttracker.netlify.app-00a2ff?style=for-the-badge&logo=netlify&logoColor=white)](https://mexttracker.netlify.app/)
 [![Google Apps Script](https://img.shields.io/badge/Backend-Google_Apps_Script-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://developers.google.com/apps-script)
 [![Google Sheets](https://img.shields.io/badge/Database-Google_Sheets-34A853?style=for-the-badge&logo=googlesheets&logoColor=white)](https://www.google.com/sheets/about/)
 [![Gmail API](https://img.shields.io/badge/Sync-Gmail_API-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](https://mail.google.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
-**An automated academic CRM and supervisor correspondence tracker tailored for Japanese Government (MEXT / Monbukagakusho) Scholarship applicants.**
+**An automated academic CRM and correspondence tracker tailored for Japanese Government (MEXT / Monbukagakusho) Scholarship applicants.**
 
-[Explore Live Dashboard](https://mexttracker.netlify.app/) | [Report Issue](https://github.com/khizarlatif/MEXT_Tracker/issues)
+Connect your own Google Sheet and Gmail to use the hosted web app, track professor correspondence automatically, and export your data to Excel.
+
+[Launch Web App](https://mexttracker.netlify.app/) | [Report Issue](https://github.com/khizarlatif/MEXT_Tracker/issues)
 
 </div>
 
 ---
 
-## Overview
+## What is MEXT Tracker?
 
-Securing a **Letter of Acceptance (LoA)** from a Japanese professor (Sensei) at premier institutions (The University of Tokyo, Kyoto University, Osaka University, Tohoku University, Tokyo Tech, etc.) is the decisive step for both **Embassy Recommendation** and **University Recommendation** tracks of the MEXT scholarship.
+Securing a **Letter of Acceptance (LoA)** from a prospective professor (Sensei) at a Japanese university (The University of Tokyo, Kyoto University, Osaka University, Tohoku University, Tokyo Tech, etc.) is the most critical milestone for both **Embassy Recommendation** and **University Recommendation** tracks of the MEXT scholarship.
 
-Cold emailing Japanese professors requires rigorous etiquette, precise follow-up timing, and meticulous organization. **MEXT Tracker** is an end-to-end management suite designed to automate this workflow:
-- **Netlify Web Dashboard:** Fast, responsive dark-mode interface with live conversion KPIs, search, filtering, and modal conversation timelines.
-- **Backend Brain ("The Engine"):** A serverless Google Apps Script running 24/7 that synchronizes with Gmail, cleans email quotes, and computes outreach status automatically.
-- **Cloud Database:** A linked Google Sheet that stores all professor profiles, correspondence history, and status flags in real time.
-
----
-
-## Key Features
-
-- **MEXT Outreach KPI Dashboard**
-  - Instant conversion metrics: Total Sensei Contacted, Response Rate %, LoA / Acceptance %, and Action Required flags.
-  - Color-coded status pipeline (Accepted, Action Required, Awaiting Reply, Ignored, Rejected, Ghosted).
-
-- **Automated Gmail Synchronization**
-  - Background cron runs every 8 hours scanning recent exchanges (`newer_than:2d`).
-  - Distinguishes between professor replies and candidate follow-ups.
-  - Automatically filters out bounce notifications, postmasters, and automated vacation/out-of-office replies.
-
-- **Academic Email Quote & Signature Parser**
-  - Specialized regex patterns strip reply headers, forwarded message dividers, and signatures.
-  - Deduplicates repeated email quotation blocks to keep threads concise and readable.
-
-- **Resilient Multi-Chunk Full Sync**
-  - Automated self-triggering time limits safely bypass Google Apps Script's 6-minute ceiling when processing deep email histories.
-
-- **Instant Search & Multi-Criteria Filtering**
-  - Live search across Professor Name, University, Laboratory Research Field, and Email.
-  - Quick filters by thread state and urgency level.
-
-- **Offline Caching & 1-Click XLSX Export**
-  - Powered by `localforage` (IndexedDB) for offline readiness and instant page reloads.
-  - Integrated `SheetJS (XLSX)` for instant export to Excel spreadsheets.
+**MEXT Tracker provides a ready-to-use hosted web dashboard that connects directly to your own Google Sheet and Gmail:**
+- **Hosted App:** Ready to use immediately at [mexttracker.netlify.app](https://mexttracker.netlify.app/) (no installation or hosting required).
+- **Your Data Stays Yours:** All professor profiles, interaction logs, and notes live securely in your private Google Sheet and Gmail account.
+- **Automated Tracking:** Background scripts automatically scan your Gmail for replies from professors, clean email quotes, and update interaction statuses.
+- **Excel Export:** Download your entire outreach tracker as an Excel spreadsheet (`.xlsx`) at any time.
 
 ---
 
-## Interaction Lifecycle & Status Rules
+## Features
 
-| Status | Trigger Condition | Visual Tag |
-| :--- | :--- | :---: |
-| **Not Contacted** | Newly added professor profile; no outreach email sent yet | Gray |
-| **Awaiting Reply** | Outreach email sent; waiting for Sensei response (< 14 days) | Amber |
-| **Action Required** | Sensei has replied and expects an answer, or follow-up deadline is due (> 7 days) | Orange |
-| **Accepted** | Informal consent, interview offer, or Letter of Acceptance (LoA) issued | Mint Green |
-| **Ignored** | No reply received after standard waiting threshold (> 14 days) | Purple |
-| **Rejected** | Laboratory capacity full or research alignment mismatch | Red |
-| **Ghosted** | Sensei ceased communication after initial interest | Indigo |
+- **MEXT Outreach KPI Dashboard:** Live metrics tracking total Sensei contacted, response rate %, LoA acquisition count, and pending follow-ups.
+- **Automated Gmail Synchronization:** Runs every 8 hours in the background to scan for incoming replies and update interaction statuses.
+- **Email Quote Cleaning:** Strips Japanese and English quotation headers, forwarded dividers, and mobile signatures.
+- **Status Pipeline:** Classifies interactions into Not Contacted, Awaiting Reply, Action Required, Accepted (LoA), Ignored, Rejected, or Ghosted.
+- **Offline Caching:** Powered by IndexedDB so your dashboard loads instantly even with slow internet.
+- **1-Click Excel Backup:** Export your entire professor database directly into an Excel (`.xlsx`) workbook at any time.
 
 ---
 
-## Setup & Deployment Guide
+## Quick Setup: How to Use with Your Own Google Sheet
 
-### 1. Create your Google Sheet
-1. Create a new Google Sheet.
-2. Name the tab `Sheet1`.
-3. Set the following column headers in Row 1:
+You do **not** need to deploy or host any web application. The web app is already live at [mexttracker.netlify.app](https://mexttracker.netlify.app/). Follow these 3 steps to connect your own sheet and script:
+
+### Step 1: Create Your Google Sheet
+1. Create a new Google Sheet at [sheets.new](https://sheets.new).
+2. Set the sheet tab name to `Sheet1`.
+3. Add the following column headers in Row 1:
    ```text
    Professor | University | Research Interest | Email | Linked_Email | Email_Logs | Last_Contact | Thread_State | Notes | Reply_Status
    ```
 
-### 2. Deploy the Apps Script Backend ("The Brain")
-1. In your Google Sheet, open **Extensions** > **Apps Script**.
-2. Replace all placeholder code with the code from [`backend_template.js`](backend_template.js).
-3. Configure your personal settings at the top of the file:
+### Step 2: Add the Background Script ("The Brain")
+1. In your Google Sheet, click **Extensions** > **Apps Script**.
+2. Replace any default code with the contents of [`backend_template.js`](backend_template.js).
+3. At the top of the file, fill in your Google Sheet URL and your Gmail address:
    ```javascript
-   var TRACKER_SHEET_URL         = "YOUR_GOOGLE_SHEET_URL";
+   var TRACKER_SHEET_URL         = "PASTE_YOUR_GOOGLE_SHEET_URL_HERE";
    var TRACKER_SHEET_NAME        = "Sheet1";
-   var TRACKER_USER_EMAIL        = "your-email@gmail.com";
+   var TRACKER_USER_EMAIL        = "your.email@gmail.com";
    var IGNORED_DAYS_THRESHOLD         = 14;
    var ACTION_REQUIRED_DAYS_THRESHOLD = 7;
    ```
 4. Click **Deploy** > **New deployment**.
-5. Choose **Web app**:
+5. Select type **Web app**:
    - **Execute as:** `Me (your account)`
    - **Who has access:** `Anyone`
-6. Copy your **Web App URL**.
+6. Click **Deploy**, authorize the permissions, and **copy your Web App URL** (looks like `https://script.google.com/macros/s/.../exec`).
 
-### 3. Add Background Automation Triggers
-1. In the Apps Script sidebar, click the **Triggers** icon.
+#### Enable Automatic 24/7 Gmail Sync:
+1. In the Apps Script left sidebar, click the **Triggers (clock icon)**.
 2. Click **Add Trigger** (bottom right):
    - **Choose which function to run:** `syncRecent`
    - **Select event source:** `Time-driven`
-   - **Select type of time based trigger:** `Hour timer` -> `Every 8 hours`
-3. Click **Save** and grant the requested permissions.
+   - **Type of time based trigger:** `Hour timer` -> `Every 8 hours`
+3. Click **Save**.
 
-### 4. Deploy Frontend to Netlify
-1. Fork or clone this repository.
-2. In `index.html`, verify or paste your Google Apps Script Web App URL.
-3. Deploy to Netlify:
-   - Drag and drop the repo folder, or connect your GitHub repository for continuous deployments.
-4. Access your tracker live on Netlify!
-
----
-
-## Tech Stack
-
-- **Frontend:** HTML5, CSS3 Custom Modern Dark UI, Vanilla JavaScript (ES6+)
-- **Libraries:**
-  - [SheetJS (xlsx.full.min.js)](https://cdn.sheetjs.com/) - 1-click spreadsheet export
-  - [LocalForage](https://github.com/localForage/localForage) - High performance client caching via IndexedDB
-  - [Nunito Google Font](https://fonts.google.com/specimen/Nunito) - Clean modern UI typography
-- **Backend:** Serverless Google Apps Script (GAS) runtime
-- **Services:** Gmail API, Google Sheets API, Netlify Edge Hosting
+### Step 3: Connect to the Live Web App
+1. Open [mexttracker.netlify.app](https://mexttracker.netlify.app/).
+2. Click the **API Settings** button in the navigation bar.
+3. Paste your **Web App URL** from Step 2 and click **Save**.
+4. That is it! Your personal dashboard is connected:
+   - Add professors directly from the app or from your Google Sheet.
+   - Click **Run Sync** to scan your Gmail on demand.
+   - Click **Export to Excel** to download your spreadsheet.
 
 ---
 
-## Contributing
+## Status Classification Guide
 
-Contributions and enhancements are welcomed!
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/NewFeature`)
-3. Commit your Changes (`git commit -m 'Add NewFeature'`)
-4. Push to the Branch (`git push origin feature/NewFeature`)
-5. Open a Pull Request
+| Status | Meaning |
+| :--- | :--- |
+| **Not Contacted** | Newly added professor profile; no outreach email sent yet. |
+| **Awaiting Reply** | Outreach email sent; waiting for Sensei response (within 14 days). |
+| **Action Required** | Sensei has replied and awaits your answer, or follow-up is overdue (> 7 days). |
+| **Accepted** | Informal consent, interview offer, or Letter of Acceptance (LoA) obtained. |
+| **Ignored** | No reply received after 14 days. |
+| **Rejected** | Laboratory capacity full or research alignment mismatch. |
+| **Ghosted** | Communication stalled after initial interest. |
+
+---
+
+## Privacy & Security
+
+- **Your data stays in your control:** The web app runs client-side in your browser. All records are stored exclusively in your own Google Sheet and your own Gmail account.
+- **No third-party database:** Nothing is stored on external servers or Netlify databases.
 
 ---
 
@@ -142,6 +116,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 <div align="center">
 
-Built with care by [Khizar Latif](https://github.com/khizarlatif)
+Built by [Khizar Latif](https://github.com/khizarlatif)
 
 </div>
